@@ -1,3 +1,7 @@
 .idea
 env
-.env
+.env.bat
+
+app/__pycache__/
+app/config/__pycache__/
+app/endpoints/__pycache__/

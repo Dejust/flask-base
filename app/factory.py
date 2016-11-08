@@ -4,20 +4,20 @@
 from flask import Flask
 from flask_migrate import Migrate
 
-from app.config import CommonConfig
+from app.config import CommonConfig, get_config
 from app.endpoints import pages
 from app.models.common import db
+from app.models.enums import Endpoints
 
 
 def _add_endpoints(app: Flask):
-    app.add_url_rule('/', 'pages.index', pages.index_page, methods=['GET'])
+    app.add_url_rule('/', Endpoints.pages_index, pages.index_page, methods=['GET'])
 
 
 def get_application(configuration: CommonConfig):
     """
     Возвращает инстанс Flask-приоложения для соответствующего окружения
     :param configuration: конфиуграция
-    :rtype: flask.Flask
     """
     app = Flask(__name__)
     app.env_config = configuration
@@ -25,8 +25,9 @@ def get_application(configuration: CommonConfig):
     # Init SQLAlchemy
     app.config['SQLALCHEMY_DATABASE_URI'] = app.env_config.DATABASE_URI
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    db.init_app(app)
+    db.app = app
     app.db = db
-    app.db.init_app(app)
 
     # Init Migrations
     app.migrate = Migrate(app, app.db)
@@ -35,3 +36,12 @@ def get_application(configuration: CommonConfig):
     _add_endpoints(app)
 
     return app
+
+
+def get_application_for_env(env_name=None):
+    configuration = get_config(env_name)
+    return get_application(configuration)
+
+
+def get_test_application():
+    return get_application_for_env('test')

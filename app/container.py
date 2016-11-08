@@ -1,8 +1,6 @@
 """
 В модуле определен глобальный экземпляр Flask-приложения
 """
+from app.factory import get_application_for_env
 
-from app.config import get_config
-from app.factory import get_application
-
-app = get_application(get_config())
+app = get_application_for_env()

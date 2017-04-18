@@ -1,6 +1,7 @@
 """
 В модуле определен фабричный метод для создания инстанса приложения
 """
+from app.services.calculator import Calculator
 from flask import Flask
 from flask_migrate import Migrate
 
@@ -31,6 +32,9 @@ def get_application(configuration: CommonConfig):
 
         # Init Migrations
         app.migrate = Migrate(app, app.db)
+
+    # Add sample custom service
+    app.calculator = Calculator(42)
 
     # Add endpoints
     _add_endpoints(app)

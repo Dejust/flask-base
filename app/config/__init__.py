@@ -19,10 +19,19 @@ class CommonConfig:
 
     @property
     def is_debug(self):
+        """
+        Возвращает true, если приложение запущена в DEBUG режиме
+        :return:
+        """
         return self.DEBUG
 
     @property
     def database_enabled(self):
+        """
+        Возвращает true, если указаны настройки БД и необходим выполнить ее
+        подключение
+        :return:
+        """
         return self.DATABASE_URI is not None
 
 

@@ -1,6 +1,7 @@
+"""
+Здесь могут быть определены любые модели SQLAlchemy
+"""
+
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
-
-
-# Define your models here
+DB = SQLAlchemy()

@@ -22,14 +22,15 @@ def get_application(configuration: CommonConfig):
     app.env_config = configuration
 
     # Init SQLAlchemy
-    app.config['SQLALCHEMY_DATABASE_URI'] = app.env_config.DATABASE_URI
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    db.init_app(app)
-    db.app = app
-    app.db = db
+    if app.env_config.database_enabled:
+        app.config['SQLALCHEMY_DATABASE_URI'] = app.env_config.DATABASE_URI
+        app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+        db.init_app(app)
+        db.app = app
+        app.db = db
 
-    # Init Migrations
-    app.migrate = Migrate(app, app.db)
+        # Init Migrations
+        app.migrate = Migrate(app, app.db)
 
     # Add endpoints
     _add_endpoints(app)

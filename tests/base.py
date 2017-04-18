@@ -8,7 +8,8 @@ class IntegrationTestCase(unittest.TestCase):
         self.test_app = get_test_application()
         self.test_client = self.test_app.test_client()
 
-        self._set_up_database()
+        if self.test_app.env_config.database_enabled:
+            self._set_up_database()
 
     def _set_up_database(self):
         db = self.test_app.db

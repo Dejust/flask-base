@@ -13,24 +13,23 @@ class CommonConfig:
     DEBUG = False
 
     # Параметры базы данных
-    DATABASE_URI = os.getenv('DATABASE_URI')
+    DATABASE_URI = os.getenv('DATABASE_URI', None)
+
+    ENV_NAME = None
 
     @property
     def is_debug(self):
         return self.DEBUG
 
-    @classmethod
     @property
-    def ENV_NAME(cls):
-        raise NotImplementedError
+    def database_enabled(self):
+        return self.DATABASE_URI is not None
 
 
 class DevConfig(CommonConfig):
     """Конфигурация приложения для разработки на локальных машинах разработчиков"""
 
-    @property
-    def ENV_NAME(self):
-        return 'dev'
+    ENV_NAME = 'dev'
 
     DEBUG = True
 
@@ -38,9 +37,7 @@ class DevConfig(CommonConfig):
 class TestConfig(CommonConfig):
     """Конфигурация приложения для запуска автоматических тестов"""
 
-    @property
-    def ENV_NAME(self):
-        return 'test'
+    ENV_NAME = 'test'
 
     DEBUG = True
 
@@ -48,17 +45,13 @@ class TestConfig(CommonConfig):
 class StagingConfig(CommonConfig):
     """Конфигурация приложения для запуска пре-продакшна"""
 
-    @property
-    def ENV_NAME(self):
-        return 'staging'
+    ENV_NAME = 'staging'
 
 
 class ProductionConfig(CommonConfig):
     """Конфигурация приложения для запуска продакшна"""
 
-    @property
-    def ENV_NAME(self):
-        return 'production'
+    ENV_NAME = 'production'
 
 
 _AVAILABLE_CONFIGURATIONS = [
@@ -75,6 +68,7 @@ def get_config(app_env_name=None):
     """
     Метод возвращает конфигурацию приложения для задананного окружения
     Если окружение не задано, то будет использовано значение из переменной окружений %APP_ENV%
+    :param app_env_name:
     :rtype: CommonConfig
     """
     if app_env_name is None:

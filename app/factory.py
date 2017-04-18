@@ -7,11 +7,10 @@ from flask_migrate import Migrate
 from app.config import CommonConfig, get_config
 from app.endpoints import pages
 from app.models.common import db
-from app.models.enums import Endpoints
 
 
 def _add_endpoints(app: Flask):
-    app.add_url_rule('/', Endpoints.pages_index, pages.index_page, methods=['GET'])
+    app.add_url_rule('/', 'pages.index', pages.index_page, methods=['GET'])
 
 
 def get_application(configuration: CommonConfig):

@@ -81,6 +81,6 @@ def get_config(app_env_name=None):
         app_env_name = os.getenv('APP_ENV')
 
     assert app_env_name in _ENABLED_CONFIGURATIONS, \
-        'Invalid env name: {}. Enabled environments: {}'.format(app_env_name, ", ".join(_ENABLED_CONFIGURATIONS.keys()))
+        'Invalid $APP_ENV name: {}. Enabled environments: {}'.format(app_env_name, ", ".join(_ENABLED_CONFIGURATIONS.keys()))
 
     return _ENABLED_CONFIGURATIONS[app_env_name]

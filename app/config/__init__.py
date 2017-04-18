@@ -27,7 +27,9 @@ class CommonConfig:
 
 
 class DevConfig(CommonConfig):
-    """Конфигурация приложения для разработки на локальных машинах разработчиков"""
+    """
+    Конфигурация приложения для разработки на локальных машинах разработчиков
+    """
 
     ENV_NAME = 'dev'
 
@@ -61,20 +63,25 @@ _AVAILABLE_CONFIGURATIONS = [
     DevConfig
 ]
 
-_ENABLED_CONFIGURATIONS = {c.ENV_NAME: c for c in map(lambda x: x(), _AVAILABLE_CONFIGURATIONS)}
+_ENABLED_CONFIGURATIONS = {
+    c.ENV_NAME: c for c in map(lambda x: x(), _AVAILABLE_CONFIGURATIONS)
+}
 
 
 def get_config(app_env_name=None):
     """
     Метод возвращает конфигурацию приложения для задананного окружения
-    Если окружение не задано, то будет использовано значение из переменной окружений %APP_ENV%
+    Если окружение не задано, то будет использовано значение из переменной
+    окружений %APP_ENV%
     :param app_env_name:
     :rtype: CommonConfig
     """
     if app_env_name is None:
         app_env_name = os.getenv('APP_ENV')
 
+    enabled_configs = ", ".join(_ENABLED_CONFIGURATIONS.keys())
     assert app_env_name in _ENABLED_CONFIGURATIONS, \
-        'Invalid $APP_ENV name: {}. Enabled environments: {}'.format(app_env_name, ", ".join(_ENABLED_CONFIGURATIONS.keys()))
+        'Invalid $APP_ENV name: {}. ' \
+        'Enabled environments: {}'.format(app_env_name, enabled_configs)
 
     return _ENABLED_CONFIGURATIONS[app_env_name]

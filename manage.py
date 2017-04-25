@@ -1,9 +1,9 @@
 from flask_migrate import MigrateCommand
 from flask_script import Manager
 
-from app.container import app
+from app.container import APP
 
-manager = Manager(app)
+manager = Manager(APP)
 manager.add_command('db', MigrateCommand)
 
 if __name__ == '__main__':
